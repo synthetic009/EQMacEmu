@@ -40,7 +40,7 @@ Raid::Raid(uint32 raidID)
 	memset(members ,0, (sizeof(RaidMember)*MAX_RAID_MEMBERS));
 	leader = nullptr;
 	memset(leadername, 0, 64);
-	LootType = 1;
+	LootType = 4;
 	disbandCheck = false;
 	forceDisband = false;
 }
@@ -52,7 +52,7 @@ Raid::Raid(Client* nLeader)
 	leader = nLeader;
 	memset(leadername, 0, 64);
 	strn0cpy(leadername, nLeader->GetName(), 64);
-	LootType = 1;
+	LootType = 4;
 	disbandCheck = false;
 	forceDisband = false;
 }
@@ -1033,7 +1033,7 @@ void Raid::SendRaidMembers(Client *to){
 
 	// send out a set loot type 1, this clears array on client for list of looters
 	rg->action = RaidCommandSetLootType;
-	rg->parameter = 1;
+	rg->parameter = GetLootType();
 	to->QueuePacket(outapp);
 	safe_delete(outapp);
 
@@ -1555,7 +1555,7 @@ void Raid::SendRaidGroupRemove(const char *who, uint32 gid, bool skip_removed)
 
 void Raid::SetRaidDetails()
 {
-	std::string query = StringFormat("INSERT INTO raid_details SET raidid = %lu, loottype = 1, locked = 0",
+	std::string query = StringFormat("INSERT INTO raid_details SET raidid = %lu, loottype = 4, locked = 0",
                                     (unsigned long)GetID());
     auto results = database.QueryDatabase(query);
 }
